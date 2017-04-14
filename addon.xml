@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<addon id="plugin.gabinete56.monitor"
+version="0.1"
+name="Monitor Legislativo - Gabinete56"
+provider-name="Gabinete56">
+<requires>
+  <import addon="xbmc.python" version="2.24.0"/>
+</requires>
+<extension point="xbmc.python.pluginsource" library="main.py">
+  <provides>video</provides>
+</extension>
+<extension point="xbmc.addon.metadata">
+  <summary lang="pt-br">Monitor Legislativo - Gabinete56</summary>
+  <description lang="pt-br">Plugin de Monitoramento Legislativo do Gabinete 56.</description>
+  <assets>
+    <icon>icon.png</icon>
+    <fanart>fanart.jpg</fanart>
+    <screenshot>resources\screenshot-01.jpg</screenshot>
+    <screenshot>resources\screenshot-02.jpg</screenshot>
+    <screenshot>resources\screenshot-03.jpg</screenshot>    
+  </assets>
+  <news>Versão 0.1</news>
+</extension>
+</addon>
