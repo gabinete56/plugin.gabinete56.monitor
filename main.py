@@ -22,18 +22,13 @@ xbmcplugin.setContent(_handle, 'episodes')
 # Here we use a fixed set of properties simply for demonstrating purposes
 # In a "real life" plugin you will need to get info and links to video files/streams
 # from some web-site or online service.
-VIDEOS_MODEL = {'category': [{'name': 'Crab',
-                       'thumb': 'http://www.vidsplay.com/vids/crab.jpg',
-                       'video': 'http://www.vidsplay.com/vids/crab.mp4',
-                       'genre': 'Animals'},
-                      {'name': 'Alligator',
-                       'thumb': 'http://www.vidsplay.com/vids/alligator.jpg',
-                       'video': 'http://www.vidsplay.com/vids/alligator.mp4',
-                       'genre': 'Animals'},
-                      {'name': 'Turtle',
-                       'thumb': 'http://www.vidsplay.com/vids/turtle.jpg',
-                       'video': 'http://www.vidsplay.com/vids/turtle.mp4',
-                       'genre': 'Animals'}
+VIDEOS_LIVE = {'live': [{'name': 'Plenária',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala01',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       }
                       ]
               }
 
@@ -44,7 +39,6 @@ DEBUG = False
 CATEGORIES = [(50, "Colégio de Líderes - Reunião Ordinária"),
               (51, "Colégio de Líderes - Reunião Extraordinária"),
               (30, "Plenário - Sessões Extraordinárias")]
-VIDEOS = {}
 
 if not os.path.exists(cache_path) or DEBUG==True:
   try:
@@ -60,6 +54,7 @@ if not os.path.exists(cache_path) or DEBUG==True:
 
 with open(cache_path, 'r') as cache:
   VIDEOS = json.load(cache)
+  VIDEOS['live'] = VIDEOS_LIVE['live']
 
 
 def get_url(**kwargs):
@@ -114,6 +109,8 @@ def list_categories():
     """
     Create the list of video categories in the Kodi interface.
     """
+
+
     # Get video categories
     categories = get_categories()
     # Iterate through categories
