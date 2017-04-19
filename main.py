@@ -10,7 +10,7 @@ from urlparse import parse_qsl
 import json
 import xbmcgui
 import xbmcplugin, xbmcaddon
-import scraper
+import scraper, rtspcheck
 
 # Get the plugin url in plugin:// notation.
 _url = sys.argv[0]
@@ -22,13 +22,70 @@ xbmcplugin.setContent(_handle, 'episodes')
 # Here we use a fixed set of properties simply for demonstrating purposes
 # In a "real life" plugin you will need to get info and links to video files/streams
 # from some web-site or online service.
-VIDEOS_LIVE = {'live': [{'name': 'Plenária',
+VIDEOS_LIVE = {'live': [{'name': 'Plenário 1o de Maio',
                        'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
                        'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala01',
                        'genre': 'live',
                        'tagline' : 'ao vivo',
                        'order' : 0,
-                       }
+                       'live' : True,
+                       },
+                       {'name': 'Salão Nobre',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala02',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Auditório Prestes Maia',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala03',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Sala Tiradentes',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala04',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Sala A',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala05',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Sala B',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala06',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Sala C',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala07',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
+                       {'name': 'Auditório Externo',
+                       'thumb': 'http://www.camara.sp.gov.br/wp-content/themes/portal-cmsp/library/images/logo-camara.png',
+                       'video': 'rtsp://camarasp.flashserverbr.com:1935/camarasp/sala08',
+                       'genre': 'live',
+                       'tagline' : 'ao vivo',
+                       'order' : 0,
+                       'live' : True,
+                       },
                       ]
               }
 
@@ -52,10 +109,11 @@ if not os.path.exists(cache_path) or DEBUG==True:
   
   json.dump(cache, open(cache_path, 'w'))
 
+VIDEOS = {}
 with open(cache_path, 'r') as cache:
   VIDEOS = json.load(cache)
-  VIDEOS['live'] = VIDEOS_LIVE['live']
 
+VIDEOS['live'] = VIDEOS_LIVE['live']
 
 def get_url(**kwargs):
     """
@@ -68,6 +126,14 @@ def get_url(**kwargs):
     """
     return '{0}?{1}'.format(_url, urlencode(kwargs))
 
+
+def check_live(video):
+    if video.has_key('live'):
+        try:
+            online = rtspcheck.check_stream(video['video'])
+        except:
+            online = False
+    return online
 
 def get_categories():
     """
@@ -103,7 +169,6 @@ def get_videos(category):
     :rtype: list
     """
     return VIDEOS[category]
-
 
 def list_categories():
     """
@@ -151,6 +216,7 @@ def list_videos(category):
     """
     # Get the list of videos in the category.
     videos = get_videos(category)
+
     # Iterate through videos.
     for video in videos:
         # Create a list item with a text label and a thumbnail image.
@@ -178,6 +244,11 @@ def list_videos(category):
         # is_folder = False means that this item won't open any sub-list.
         is_folder = False
         # Add our item to the Kodi virtual folder listing.
+        
+        if video.has_key('live') and not check_live(video):
+            list_item.setInfo('video', {'title' : video['name'] + ' - OFFLINE'})
+            list_item.setProperty('IsPlayable', 'false')
+
         xbmcplugin.addDirectoryItem(_handle, url, list_item, is_folder)
     # Add a sort method for the virtual folder items (alphabetically, ignore articles)
     xbmcplugin.addSortMethod(_handle, xbmcplugin.  SORT_METHOD_VIDEO_SORT_TITLE)
