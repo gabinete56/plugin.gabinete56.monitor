@@ -1,15 +1,18 @@
-# Simple example plugin for Kodi mediacenter
+# Panopticon Legislativo
 
-This is a simple yet fully functional example of a video plugin for [Kodi](http://kodi.tv) mediacenter.
-Please read the comments in the plugin code for more details.
-An installable .zip can be downloaded from "[Releases](https://github.com/romanvm/plugin.video.example/releases)" tab.
+O Panopticon Legislativo é um sistema de acompanhamento dos streamings das casas legislativas.
 
-**Note**: the purpose of this example plugin is to show you how to organize and play your media content in Kodi.
-The methods of obtaining such content, for example parsing websites or working with various APIs,
-are beyond the scope of this example.
+Uma interface plug ng play baseada em Raspberry PI - basta conectar na televisão e você pode encontrar e visualizar os streamings que estejam acontecendo naquele momento na Câmara Municipal de São Paulo.
 
-The plugin uses a pre-defined set of free sample videos from [www.vidsplay.com](http://www.vidsplay.com/).
+## Especificação
 
-**Warning**: the "master" branch is only compatible with Kody 16.0 (Jarvis) and above. For older versions see the "legacy" branch.
-
-License: [GPL v.3](http://www.gnu.org/copyleft/gpl.html)
+* Interface web (acessável através de browsers externos)
+* Raspi rodando em Kiosk mode
+* Capacidade de navegar pelos streamings ativos no momento
+  * Capacidade de adicionar outros streamings arbitrários via config
+* Capacidade de navegar pela biblioteca de arquivos anteriores
+* Suporte a controle remoto (ir)
+* Forma simples de configurar wifi
+* Cache local de arquivos de vídeo já exibidos
+* Modo fullscreen
+* Modo c/ acesso a chatroom e/ou comentários do vídeo
